@@ -130,25 +130,25 @@ defmodule GildedRoseTest do
     end
   end
 
-  # describe "Conjured" do
-  #   test "quality degrades by two" do
-  #     item = %Item{
-  #       name: "Conjured",
-  #       sell_in: 20,
-  #       quality: 30
-  #     }
-  #     next_item = GildedRose.update_item(item)
-  #     assert next_item.quality == 28
-  #   end
+  describe "Conjured" do
+    test "quality degrades by two" do
+      item = %Item{
+        name: "Conjured",
+        sell_in: 20,
+        quality: 30
+      }
+      next_item = GildedRose.update_item(item)
+      assert next_item.quality == 28
+    end
 
-  #   test "quality degrades by four" do
-  #     item = %Item{
-  #       name: "Conjured",
-  #       sell_in: -1,
-  #       quality: 30
-  #     }
-  #     next_item = GildedRose.update_item(item)
-  #     assert next_item.quality == 26
-  #   end
-  # end
+    test "quality degrades by four" do
+      item = %Item{
+        name: "Conjured",
+        sell_in: -1,
+        quality: 30
+      }
+      next_item = GildedRose.update_item(item)
+      assert next_item.quality == 26
+    end
+  end
 end
