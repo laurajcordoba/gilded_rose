@@ -8,13 +8,13 @@ defmodule GildedRose do
   end
 
   # Add new functionality for Conjured
-  def update_item(%Item{name: name, sell_in: sell_in} = item) when name == "Conjured" and sell_in <= 0 do
+  def update_item(%Item{name: "Conjured", sell_in: sell_in} = item) when sell_in <= 0 do
     item
     |> reduce_sell_in_by_one()
     |> degrade_quality(4)
   end
 
-  def update_item(%Item{name: name} = item) when name == "Conjured" do
+  def update_item(%Item{name: "Conjured"} = item) do
     item
     |> reduce_sell_in_by_one()
     |> degrade_quality(2)
@@ -39,8 +39,7 @@ defmodule GildedRose do
 
   # Helper methods Refactor
   defp sell_in_less_zero(%Item{sell_in: sell_in} = item) when sell_in < 0 do
-    item
-    |> diff_aged()
+    diff_aged(item)
   end
 
   defp sell_in_less_zero(item) do
@@ -48,13 +47,11 @@ defmodule GildedRose do
   end
 
   defp diff_aged(%Item{name: name} = item) when name != "Aged Brie" do
-    item
-    |> diff_backstate()
+    diff_backstate(item)
   end
 
   defp diff_aged(item) do
-    item
-    |> max_quality()
+    max_quality(item)
   end
 
   defp increase_quality(item) do
@@ -62,8 +59,7 @@ defmodule GildedRose do
   end
 
   defp max_quality(%Item{quality: quality} = item) when quality < 50 do
-    item
-    |> increase_quality()
+    increase_quality(item)
   end
 
   defp max_quality(item) do
@@ -71,13 +67,11 @@ defmodule GildedRose do
   end
 
   defp diff_backstate(%Item{name: name} = item) when name != "Backstage passes to a TAFKAL80ETC concert" do
-    item
-    |> quality_check()
+    quality_check(item)
   end
 
   defp diff_backstate(item) do
-    item
-    |> reduce_item_quality()
+    reduce_item_quality(item)
   end
 
   defp reduce_item_quality(item) do
@@ -86,8 +80,7 @@ defmodule GildedRose do
 
 
   defp quality_check(%Item{quality: quality} = item) when quality > 0 do
-    item
-    |> diff_sulfuras_decrease_quality()
+    diff_sulfuras_decrease_quality(item)
   end
 
   defp quality_check(item) do
@@ -99,29 +92,18 @@ defmodule GildedRose do
   end
 
   defp diff_sulfuras_sellin(%Item{name: name} = item) when name != "Sulfuras, Hand of Ragnaros" do
-    item
-    |> reduce_item_sellin()
+    reduce_item_sellin(item)
   end
 
-  defp diff_sulfuras_sellin(%Item{name: name} = item) do
-    item
-  end
-
-  defp sell_in_less_11(%Item{sell_in: sell_in} = item) when sell_in < 11 do
-    item
-    |> max_quality()
-  end
-
-  defp sell_in_less_11(item) do
+  defp diff_sulfuras_sellin(item) do
     item
   end
 
-  defp sell_in_less_6(%Item{sell_in: sell_in} = item) when sell_in < 6 do
-    item
-    |> max_quality()
+  defp sell_in_less(%Item{sell_in: sell_in} = item, sell_in_param) when sell_in < sell_in_param do
+    max_quality(item)
   end
 
-  defp sell_in_less_6(item) do
+  defp sell_in_less(%Item{sell_in: sell_in} = item, _sell_in_param) do
     item
   end
 
@@ -135,8 +117,8 @@ defmodule GildedRose do
 
   defp is_backstage(%Item{name: name} = item) when name == "Backstage passes to a TAFKAL80ETC concert" do
     item
-    |> sell_in_less_11()
-    |> sell_in_less_6()
+    |> sell_in_less(11)
+    |> sell_in_less(6)
   end
 
   defp is_backstage(item) do
@@ -154,13 +136,11 @@ defmodule GildedRose do
   end
 
   defp different_aged_backstage(%Item{name: name} = item) when name != "Aged Brie" and name != "Backstage passes to a TAFKAL80ETC concert" do
-    item
-    |> quality_check()
+    quality_check(item)
   end
 
   defp different_aged_backstage(item)do
-    item
-    |> increase_quality_and_backstage()
+    increase_quality_and_backstage(item)
   end
   # New Solution End
 end
